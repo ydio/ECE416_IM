@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #compile the program
-javac thanksboo/Server.java 
+javac Server/Server.java 
 
 #start the program
-java thanksboo.Server
+java Server.Server
 

@@ -1,7 +1,7 @@
-package thanksboo;
+package Server;
 
 import java.io.Serializable;
-import thanksboo.PacketTypes;
+import Server.PacketTypes;
 
 public class Packet implements Serializable {
 	private static final long serialVersionUID = -816057798889963281L;

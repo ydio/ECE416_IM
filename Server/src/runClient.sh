@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #compile the program
-javac thanksboo/Client.java 
+javac Server/Client.java 
 
 #start the program
-java thanksboo.Client
+java Server.Client

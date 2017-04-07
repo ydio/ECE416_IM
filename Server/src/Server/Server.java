@@ -1,4 +1,4 @@
-package thanksboo;
+package Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,8 +11,8 @@ import java.net.Socket;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import thanksboo.Packet;
-import thanksboo.PacketTypes;
+import Server.Packet;
+import Server.PacketTypes;
 
 public class Server {
 

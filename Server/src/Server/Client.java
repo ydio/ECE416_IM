@@ -1,4 +1,4 @@
-package thanksboo;
+package Server;
 
 //import java.io.PrintStream;
 import java.io.BufferedReader;
@@ -12,8 +12,8 @@ import java.util.Date;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import thanksboo.Packet;
-import thanksboo.PacketTypes;
+import Server.Packet;
+import Server.PacketTypes;
 
 public class Client implements Runnable {
 
