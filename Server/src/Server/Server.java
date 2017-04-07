@@ -13,6 +13,7 @@ import java.io.ObjectOutputStream;
 
 import Server.Packet;
 import Server.PacketTypes;
+//import eceapp.finalapp.Packet;
 
 public class Server {
 
@@ -80,7 +81,11 @@ class clientThread extends Thread {
 			boolean serverRunning = true;
 	    	while (serverRunning) {
 	    		try {
-					receivedPacket = (Packet) clientInput.readObject();
+					receivedPacket = clientInput.readObject();
+
+					if (receivedPacket.getName().equals("eceapp.finalapp.Packet")) {
+                        receivedPacket = ObjectStreamClass.lookup(Server.Packet);
+					}
 					//send to all client
 					synchronized (this) {
 						for (int index = 0; index < numClients; index++) {
