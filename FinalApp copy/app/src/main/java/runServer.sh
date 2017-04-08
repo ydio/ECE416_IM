@@ -4,5 +4,5 @@
 javac Server/Server.java 
 
 #start the program
-java eceapp.finalapp.Server
+java eceapp.ChitChat.Server
 
