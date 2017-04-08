@@ -18,8 +18,10 @@ public class Client {
     private OnMessageReceived mMessageListener = null;
     private boolean mRun = false;
 
-    PrintWriter out;
+
+    PrintStream output;
     BufferedReader in;
+    String myMessage;
 
     /**
      * Constructor of the class. OnMessagedReceived listens for the messages
@@ -37,16 +39,17 @@ public class Client {
      *            text entered by client
      */
     public void sendMessage(String message) {
-
+        myMessage = message;
         new AsyncTask<String,String,Void>() {
             protected Void doInBackground(String... message) {
-                if (out != null && !out.checkError()) {
-                    out.println(message);
-                    out.flush();
+                if (output != null && !output.checkError()) {
+                    System.out.println(myMessage);
+                    output.println(myMessage);
+                    output.flush();
                 }
                 return null;
             }
-        }.execute(message);
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, message);
     }
 
     public void stopClient() {
@@ -70,8 +73,7 @@ public class Client {
             try {
 
                 // send the message to the server
-                out = new PrintWriter(new BufferedWriter(
-                        new OutputStreamWriter(socket.getOutputStream())), true);
+                output = new PrintStream(socket.getOutputStream());
 
                 Log.e("TCP Client", "C: Sent.");
 

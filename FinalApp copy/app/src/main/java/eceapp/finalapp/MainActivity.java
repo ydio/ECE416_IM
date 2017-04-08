@@ -45,13 +45,12 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
 
                 String message = editText.getText().toString();
-
+                
                 //add the text in the arrayList
                 //arrayList.add("c: " + message);
 
                 //sends the message to the server
                 if (mClient != null) {
-                    System.out.println("here?");
                     mClient.sendMessage(message);
                 }
 

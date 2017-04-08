@@ -113,7 +113,7 @@ class clientThread extends Thread {
 				if (name.indexOf('@') == -1) {
 					break;
 				} else {
-					os.println("The name should not contain '@' character.");
+					os.println("The name should not contain '@' character." + name);
 				}
 			}
 
