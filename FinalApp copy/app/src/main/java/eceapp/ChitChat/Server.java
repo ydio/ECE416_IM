@@ -80,7 +80,7 @@ public class Server {
  */
 class clientThread extends Thread {
 
-	static Client client;
+	static User client;
 	private String name = null;
 	private BufferedReader is = null;
 	private PrintStream os = null;
@@ -109,7 +109,7 @@ class clientThread extends Thread {
                 System.out.println("waiting?");
 				name = is.readLine().trim();
                 System.out.println("got name?");
-				client = new Client(name);
+				client = new User(name);
 				if (name.indexOf('@') == -1) {
 					break;
 				} else {

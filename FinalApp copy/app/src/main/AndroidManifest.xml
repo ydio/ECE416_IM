@@ -10,15 +10,42 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="eceapp.ChitChat.Home"
-            android:label="@string/app_name" >
+            android:label="ChitChat" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="eceapp.ChitChat.AddUser"
+            android:label="ChitChat">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="eceapp.ChitChat.SplashScreen"
+            android:label="ChitChat">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="eceapp.ChitChat.CreateGroup"
+            android:label="ChitChat">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="eceapp.ChitChat.JoinGroup"
+            android:label="ChitChat">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name="eceapp.ChitChat.SendMessages"
-            android:label="@string/app_name"></activity>
+            android:label="ChitChat"></activity>
     </application>
 
 </manifest>

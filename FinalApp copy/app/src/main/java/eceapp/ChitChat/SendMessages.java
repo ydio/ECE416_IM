@@ -10,11 +10,9 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 public class SendMessages extends Activity {
 
@@ -30,10 +28,10 @@ public class SendMessages extends Activity {
         CreateGroup.group.rcvdMessages = new ArrayList<>();
 
         final EditText editText = (EditText) findViewById(R.id.editText);
-        Button send = (Button)findViewById(R.id.send_button);
+        Button send = (Button) findViewById(R.id.send_button);
 
         //relate the listView from java to the one created in xml
-        mList = (ListView)findViewById(R.id.list);
+        mList = (ListView) findViewById(R.id.list);
         mAdapter = new MyCustomAdapter(this, CreateGroup.group.rcvdMessages);
         mList.setAdapter(mAdapter);
 
@@ -51,8 +49,8 @@ public class SendMessages extends Activity {
                 //arrayList.add("c: " + message);
 
                 //sends the message to the server
-                if (clientThread.client != null) {
-                    clientThread.client.sendMessage(message);
+                if (AddUser.user != null) {
+                    AddUser.user.sendMessage(message);
                 }
 
                 //refresh the list
@@ -63,12 +61,12 @@ public class SendMessages extends Activity {
 
     }
 
-    public class connectTask extends AsyncTask<String,String,Client> {
+    public class connectTask extends AsyncTask<String,String,User> {
 
         @Override
-        protected Client doInBackground(String... message) {
-            //we create a Client object and
-            clientThread.client.addMessageListener(new Client.OnMessageReceived() {
+        protected User doInBackground(String... message) {
+            //we create a User object and
+            AddUser.user.addMessageListener(new User.OnMessageReceived() {
                 @Override
                 //here the messageReceived method is implemented
                 public void messageReceived(String message) {
@@ -76,7 +74,7 @@ public class SendMessages extends Activity {
                     publishProgress(message);
                 }
             });
-            clientThread.client.run();
+            AddUser.user.run();
 
             return null;
         }

@@ -8,15 +8,15 @@ import java.util.ArrayList;
 
 public class Group {
     String groupName;
-    ArrayList<String> members; // names of the people in the group
+    ArrayList<User> members; // names of the people in the group
     ArrayList<String> rcvdMessages;
 
     Group(String name) {
         this.groupName = name;
     }
 
-    void addMember(String member) {
-        members.add(member);
+    void addMember(User user) {
+        members.add(user);
     }
 
     void addMessage(String message) {

@@ -9,7 +9,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class Client {
+public class User {
 
     String name;
     private String serverMessage;
@@ -27,7 +27,7 @@ public class Client {
      * Constructor of the class. OnMessagedReceived listens for the messages
      * received from server
      */
-    public Client(String clientName) {
+    public User(String clientName) {
         name = clientName;
     }
 
@@ -68,7 +68,7 @@ public class Client {
             // here you must put your computer's IP address.
             InetAddress serverAddr = InetAddress.getByName(SERVERIP);
             Log.e("serverAddr", serverAddr.toString());
-            Log.e("TCP Client", "C: Connecting...");
+            Log.e("TCP User", "C: Connecting...");
 
             // create a socket to make the connection with the server
             Socket socket = new Socket(serverAddr, SERVERPORT);
@@ -78,9 +78,9 @@ public class Client {
                 // send the message to the server
                 output = new PrintStream(socket.getOutputStream());
 
-                Log.e("TCP Client", "C: Sent.");
+                Log.e("TCP User", "C: Sent.");
 
-                Log.e("TCP Client", "C: Done.");
+                Log.e("TCP User", "C: Done.");
 
                 // receive the message which the server sends back
                 in = new BufferedReader(new InputStreamReader(

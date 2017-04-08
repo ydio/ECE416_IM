@@ -2,6 +2,8 @@ package eceapp.ChitChat;
 
 /**
  * Created by lydiasainsbury.
+ * This is where the IP address is entered, and once this is entered it takes you to add user
+ * so that you can enter your name.
  */
 
 import android.app.Activity;
@@ -27,9 +29,11 @@ public class Home extends Activity {
             @Override
             public void onClick(View v) {
                 String ip = ipAddress.getText().toString();
-                Client.SERVERIP = ip;
-                Intent intent = new Intent(getBaseContext(), SplashScreen.class);
-                //Log.e("ServerIP", Client.SERVERIP);
+                User.SERVERIP = ip;
+                System.out.println("1");
+                Intent intent = new Intent(getBaseContext(), AddUser.class);
+                System.out.println("2");
+                //Log.e("ServerIP", User.SERVERIP);
                 startActivity(intent);
             }
         });
