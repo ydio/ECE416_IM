@@ -8,6 +8,9 @@ import java.net.Socket;
 import java.net.ServerSocket;
 import java.io.BufferedReader;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 /*
  * A chat server that delivers public and private messages.
  */
@@ -26,13 +29,6 @@ public class Server {
 
 		// The default port number.
 		int portNumber = 2222;
-		if (args.length < 1) {
-			System.out.println("Usage: java MultiThreadChatServerSync <portNumber>\n"
-					+ "Now using port number=" + portNumber);
-		} else {
-			portNumber = Integer.valueOf(args[0]).intValue();
-		}
-
     /*
      * Open a server socket on the portNumber (default 2222). Note that we can
      * not choose a port less than 1023 if we are not privileged users (root).
@@ -59,7 +55,7 @@ public class Server {
 				}
 				if (i == maxClientsCount) {
 					PrintStream os = new PrintStream(clientSocket.getOutputStream());
-					os.println("Server too busy. Try later.");
+					//os.println("Server too busy. Try later.");
 					os.close();
 					clientSocket.close();
 				}
@@ -94,6 +90,21 @@ class clientThread extends Thread {
 		maxClientsCount = threads.length;
 	}
 
+	//public String addInfo (String loginName, String type, String isMe, String time, String message) {
+	public String addInfo (String... info) {
+		String packet = "";
+		for(String value : info){
+			packet.concat(value);
+			packet.concat("|");
+		}
+		return packet;
+	}
+
+	public String getInfo (String packet) {
+		String[] info = packet.split("|", 5);
+		return packet;
+	}
+
 	public void run() {
 		int maxClientsCount = this.maxClientsCount;
 		clientThread[] threads = this.threads;
@@ -104,71 +115,65 @@ class clientThread extends Thread {
        */
 			is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			os = new PrintStream(clientSocket.getOutputStream());
-			String name;
 			while (true) {
-				os.println("Enter your name.");
-                System.out.println("waiting?");
-				name = is.readLine().trim();
-                System.out.println("got name?");
-				if (name.indexOf('@') == -1) {
+				Packet sentPacket = new Packet (" ", "LOGIN", "no", DateFormat.getDateTimeInstance().format(new Date()), "Enter your name.");
+				//System.out.println("message: " + sentPacket.getMessage());
+				//System.out.println(sentPacket.tostring(sentPacket));
+
+				os.println(sentPacket.tostring(sentPacket));
+
+				String recivedPacket = is.readLine().trim();
+				//System.out.println("packet " + recivedPacket);
+				Packet newPacket = new Packet(recivedPacket);
+				clientName = newPacket.getMessage();
+
+				if (clientName.indexOf('|') == -1) {
 					break;
 				} else {
-					os.println("The name should not contain '@' character." + name);
+					sentPacket = new Packet (clientName, "MESSAGE", "no", DateFormat.getDateTimeInstance().format(new Date()), "name should not contain bad char");
+					os.println(sentPacket.tostring(sentPacket));
 				}
 			}
 
+
       /* Welcome the new the client. */
-			os.println("Welcome " + name
-					+ " to our chat room.\nTo leave enter /quit in a new line.");
+
 			synchronized (this) {
 				for (int i = 0; i < maxClientsCount; i++) {
-					if (threads[i] != null && threads[i] == this) {
-						clientName = "@" + name;
-						break;
-					}
-				}
-				for (int i = 0; i < maxClientsCount; i++) {
-					if (threads[i] != null && threads[i] != this) {
-						threads[i].os.println("*** A new user " + name
+					System.out.println("in welcome?");
+					if (threads[i] != null) {
+						Packet sentPacket = new Packet (clientName, "MESSAGE", "no", DateFormat.getDateTimeInstance().format(new Date()), "*** A new user " + clientName
 								+ " entered the chat room !!! ***");
+
+						threads[i].os.println(sentPacket.tostring(sentPacket));
+						System.out.println(sentPacket.getMessage());
+					} else if (threads[i] != null && threads[i] == this) {
+						Packet sentPacket = new Packet (clientName, "MESSAGE", "no", DateFormat.getDateTimeInstance().format(new Date()), "*** Welcome " + clientName
+								+ " to the chat room !!! ***");
+						threads[i].os.println(sentPacket.tostring(sentPacket));
+						System.out.println(sentPacket.getMessage());
 					}
 				}
 			}
       /* Start the conversation. */
 			while (true) {
-				String line = is.readLine();
-				if (line.startsWith("/quit")) {
-					break;
-				}
-        /* If the message is private sent it to the given client. */
-				if (line.startsWith("@")) {
-					String[] words = line.split("\\s", 2);
-					if (words.length > 1 && words[1] != null) {
-						words[1] = words[1].trim();
-						if (!words[1].isEmpty()) {
-							synchronized (this) {
-								for (int i = 0; i < maxClientsCount; i++) {
-									if (threads[i] != null && threads[i] != this
-											&& threads[i].clientName != null
-											&& threads[i].clientName.equals(words[0])) {
-										threads[i].os.println("<" + name + "> " + words[1]);
-                    /*
-                     * Echo this message to let the client know the private
-                     * message was sent.
-                     */
-										this.os.println(">" + name + "> " + words[1]);
-										break;
-									}
-								}
-							}
-						}
+				System.out.println("waiting?");
+				String recivedPacket = is.readLine();
+				if (recivedPacket != null) {
+					System.out.println("packet " + recivedPacket);
+					Packet newPacket = new Packet(recivedPacket);
+					String line = newPacket.getMessage();
+
+					if (line.startsWith("/quit")) {
+						break;
 					}
-				} else {
-          /* The message is public, broadcast it to all other clients. */
+        /* The message is public, broadcast it to all other clients. */
 					synchronized (this) {
 						for (int i = 0; i < maxClientsCount; i++) {
 							if (threads[i] != null && threads[i].clientName != null) {
-								threads[i].os.println("<" + name + "> " + line);
+								Packet sentPacket = new Packet(clientName, "MESSAGE", "no", DateFormat.getDateTimeInstance().format(new Date()), "<" + clientName + "> " + line);
+								threads[i].os.println(sentPacket.tostring(sentPacket));
+
 							}
 						}
 					}
@@ -178,12 +183,15 @@ class clientThread extends Thread {
 				for (int i = 0; i < maxClientsCount; i++) {
 					if (threads[i] != null && threads[i] != this
 							&& threads[i].clientName != null) {
-						threads[i].os.println("*** The user " + name
+						Packet sentPacket = new Packet (clientName, "MESSAGE", "no", DateFormat.getDateTimeInstance().format(new Date()), "*** The user " + clientName
 								+ " is leaving the chat room !!! ***");
+						threads[i].os.println(sentPacket.tostring(sentPacket));
+
 					}
 				}
 			}
-			os.println("*** Bye " + name + " ***");
+			Packet sentPacket = new Packet (clientName, "MESSAGE", "no", DateFormat.getDateTimeInstance().format(new Date()), "*** Bye " + clientName + " ***");
+			os.println(sentPacket.tostring(sentPacket));
 
       /*
        * Clean up. Set the current thread variable to null so that a new client

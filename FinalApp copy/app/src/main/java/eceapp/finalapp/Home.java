@@ -29,7 +29,7 @@ public class Home extends Activity{
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 String ip=ipAdress.getText().toString();
-                Client.SERVERIP=ip;
+                Client.SERVERIP = ip;
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 //Log.e("ServerIP", Client.SERVERIP);
                 startActivity(intent);

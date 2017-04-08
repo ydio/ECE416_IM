@@ -8,6 +8,8 @@ import android.util.Log;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.util.Date;
 
 public class Client {
 
@@ -18,6 +20,7 @@ public class Client {
     private OnMessageReceived mMessageListener = null;
     private boolean mRun = false;
 
+    public String loginName;
 
     PrintStream output;
     BufferedReader in;
@@ -27,9 +30,15 @@ public class Client {
      * Constructor of the class. OnMessagedReceived listens for the messages
      * received from server
      */
-    public Client(OnMessageReceived listener) {
+    public Client(String login, OnMessageReceived listener) {
+        loginName = login;
         mMessageListener = listener;
 
+    }
+
+    public String addInfo (String message) {
+
+        return message;
     }
 
     /**
@@ -43,8 +52,8 @@ public class Client {
         new AsyncTask<String,String,Void>() {
             protected Void doInBackground(String... message) {
                 if (output != null && !output.checkError()) {
-                    System.out.println(myMessage);
-                    output.println(myMessage);
+                    Packet sentPacket = new Packet("", "MESSAGE", "yes", DateFormat.getDateTimeInstance().format(new Date()), myMessage);
+                    output.println(sentPacket.tostring(sentPacket));
                     output.flush();
                 }
                 return null;
@@ -83,10 +92,15 @@ public class Client {
                 in = new BufferedReader(new InputStreamReader(
                         socket.getInputStream()));
 
+
                 // in this while the client listens for the messages sent by the
                 // server
                 while (mRun) {
-                    serverMessage = in.readLine();
+
+                    String recivedPacket = in.readLine();
+                    Packet newPacket = new Packet(recivedPacket);
+
+                    serverMessage = newPacket.getMessage();
 
                     if (serverMessage != null && mMessageListener != null) {
                         // call the method messageReceived from MyActivity class

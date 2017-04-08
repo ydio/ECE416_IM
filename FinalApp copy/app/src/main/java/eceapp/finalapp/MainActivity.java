@@ -20,6 +20,7 @@ public class MainActivity extends Activity {
     private ArrayList<String> arrayList;
     private MyCustomAdapter mAdapter;
     private Client mClient;
+    private String loginName = "swag";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -45,7 +46,7 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
 
                 String message = editText.getText().toString();
-                
+
                 //add the text in the arrayList
                 //arrayList.add("c: " + message);
 
@@ -66,11 +67,14 @@ public class MainActivity extends Activity {
 
         @Override
         protected Client doInBackground(String... message) {
+            //System.out.println("in connect? ");
+            //this method calls the onProgressUpd
             //we create a Client object and
-            mClient = new Client(new Client.OnMessageReceived() {
+            mClient = new Client(loginName, new Client.OnMessageReceived() {
                 @Override
                 //here the messageReceived method is implemented
                 public void messageReceived(String message) {
+                    //System.out.println("in message recieved? ");
                     //this method calls the onProgressUpdate
                     publishProgress(message);
                 }

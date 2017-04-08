@@ -1,55 +1,93 @@
 package eceapp.finalapp;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 /**
  * Created by lydiasainsbury on 6/04/17.
  */
 
-import java.io.Serializable;
+public class Packet {
 
-public class Packet implements Serializable {
-    private static final long serialVersionUID = -816057798889963281L;
-
-    private PacketTypes type;
-    private int seqno;
     private String loginName;
-    private boolean isMe;
+    private String type;
+    private String isMe;
     private String time;
     private String message;
 
-    public Packet(PacketTypes type, int seqno, String loginName, boolean isMe, String time, String message) {
+    public Packet(String loginName, String type, String isMe, String time, String message) {
         this.type = type;
-        this.seqno = seqno;
         this.loginName = loginName;
         this.isMe = isMe;
         this.time = time;
         this.message = message;
     }
 
-    public Packet makeAck(Packet packet) {
-        packet.setType(PacketTypes.ACK);
-        packet.setMessage(null);
+    public Packet(String packet) {
+        System.out.println("this is what Packet recives: " + packet);
+        String[] info = packet.split("\\|");
+        loginName = info[0];
+        type = info[1];
+        isMe = info[2];
+        time = info[3];
+        message = info[4];
+        System.out.println("this is what Packet recives: " + message);
+    }
+
+    public String ServerMessages(String newtype, String clientName) {
+        String myMessage = "";
+        switch (newtype) {
+            case "LOGIN":
+                myMessage = "Enter your name.";
+                break;
+            case "WELCOME":
+                myMessage = clientName + " has joined the chat";
+                break;
+            case "LEAVING":
+                myMessage = clientName + " has left the chat";
+                break;
+            default:
+                myMessage = "";
+                break;
+        }
+        Packet packet = new Packet(clientName, newtype, "no", DateFormat.getDateTimeInstance().format(new Date()), myMessage);
+        return packet.tostring(packet);
+    }
+
+    public String tostring(Packet packet) {
+        String sentPacket = "";
+        sentPacket = sentPacket.concat(packet.getName());
+        sentPacket = sentPacket.concat("|");
+        sentPacket = sentPacket.concat(packet.getType());
+        sentPacket = sentPacket.concat("|");
+        sentPacket = sentPacket.concat(packet.getIsme());
+        sentPacket = sentPacket.concat("|");
+        sentPacket = sentPacket.concat(packet.getTime());
+        sentPacket = sentPacket.concat("|");
+        sentPacket = sentPacket.concat(packet.getMessage());
+        return sentPacket;
+    }
+
+    public String addInfo (String... info) {
+        String packet = "";
+        for(String value : info){
+            packet.concat(value);
+            packet.concat("|");
+        }
         return packet;
     }
 
-    public String convertToBytes() {
-
-        return null;
+    public String[] getInfo (String packet) {
+        String[] info = packet.split("|", 5);
+        return info;
     }
 
-    public PacketTypes getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(PacketTypes type) {
+    public void setType(String type) {
         this.type = type;
-    }
-
-    public int getSecqNo() {
-        return seqno;
-    }
-
-    public void setSecqNo(int seqno) {
-        this.seqno = seqno;
     }
 
     public String getName() {
@@ -60,11 +98,11 @@ public class Packet implements Serializable {
         this.loginName = loginName;
     }
 
-    public boolean getIsme() {
+    public String getIsme() {
         return isMe;
     }
 
-    public void setMe(boolean isMe) {
+    public void setMe(String isMe) {
         this.isMe = isMe;
     }
 
