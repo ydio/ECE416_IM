@@ -2,24 +2,26 @@ package eceapp.finalapp;
 
 /**
  * Created by lydiasainsbury on 6/04/17.
+ * This is where you send messages.
  */
 
-        import java.util.ArrayList;
+import java.util.ArrayList;
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Spinner;
 
-        import android.app.Activity;
-        import android.os.AsyncTask;
-        import android.os.Bundle;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.ListView;
-
-public class MainActivity extends Activity {
+public class SendMessages extends Activity {
 
     private ListView mList;
-    private ArrayList<String> arrayList;
     private MyCustomAdapter mAdapter;
     private Client mClient;
+    private Group group = new Group(); // later change this to be multiple
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -27,14 +29,19 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        arrayList = new ArrayList<String>();
+        Spinner dropdown = (Spinner)findViewById(R.id.theSpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, group.groupNames);
+        dropdown.setAdapter(adapter);
+
+        group.rcvdMessages = new ArrayList<String>();
 
         final EditText editText = (EditText) findViewById(R.id.editText);
         Button send = (Button)findViewById(R.id.send_button);
 
         //relate the listView from java to the one created in xml
         mList = (ListView)findViewById(R.id.list);
-        mAdapter = new MyCustomAdapter(this, arrayList);
+        mAdapter = new MyCustomAdapter(this, group.rcvdMessages);
         mList.setAdapter(mAdapter);
 
         // connect to the server
@@ -85,7 +92,7 @@ public class MainActivity extends Activity {
             super.onProgressUpdate(values);
 
             //in the arrayList we add the messaged received from server
-            arrayList.add(values[0]);
+            group.rcvdMessages.add(values[0]);
             // notify the adapter that the data set has changed. This means that new message received
             // from server was added to the list
             mAdapter.notifyDataSetChanged();

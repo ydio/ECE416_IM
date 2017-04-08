@@ -6,6 +6,12 @@
               
         >
 
+    <Spinner
+        android:id="@+id/theSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.06" />
+
     <ListView android:id="@+id/list"
               android:layout_width="fill_parent"
               android:layout_height="0dip"

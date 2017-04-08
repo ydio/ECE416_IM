@@ -19,8 +19,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="30dp"
-        android:ems="10" 
-        android:hint="Your ip adress">
+        android:ems="10"
+        android:hint="Your IP address">
 
         <requestFocus />
     </EditText>
@@ -31,6 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:text="Connexion" />
+        android:text="Connect" />
 
 </LinearLayout>
