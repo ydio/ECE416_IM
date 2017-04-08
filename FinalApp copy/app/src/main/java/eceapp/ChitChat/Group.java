@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 
 public class Group {
-    String groupName;
-    ArrayList<User> members; // names of the people in the group
-    ArrayList<String> rcvdMessages;
+    String groupName = null;
+    ArrayList<User> members = new ArrayList<>(); // names of the people in the group
+    ArrayList<String> rcvdMessages = new ArrayList<>();
 
     Group(String name) {
         this.groupName = name;
@@ -17,6 +17,10 @@ public class Group {
 
     void addMember(User user) {
         members.add(user);
+    }
+
+    void removeMember(User user) {
+        members.remove(user);
     }
 
     void addMessage(String message) {

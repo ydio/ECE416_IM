@@ -7,19 +7,19 @@ package eceapp.ChitChat;
 
 import java.util.ArrayList;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class SendMessages extends Activity {
 
     private ListView mList;
     private MyCustomAdapter mAdapter;
-    private User mClient;
-    private String loginName = "swag";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -27,14 +27,20 @@ public class SendMessages extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.send_messages);
 
-        CreateGroup.group.rcvdMessages = new ArrayList<>();
+        TextView groupName = (TextView) findViewById(R.id.groupID);
+//        System.out.println(AddUser.user);
+//        System.out.println(AddUser.user.currGroup);
+        System.out.println("2: " + AddUser.user.groupNames.get(AddUser.user.currGroup).groupName);
+
+//        groupName.setText(AddUser.user.groupNames.get(AddUser.user.currGroup).groupName);
+//        groupName.setText("Group ID: " + CreateGroup.group.groupName.getBytes().toString());
 
         final EditText editText = (EditText) findViewById(R.id.editText);
         Button send = (Button) findViewById(R.id.send_button);
 
         //relate the listView from java to the one created in xml
         mList = (ListView) findViewById(R.id.list);
-        mAdapter = new MyCustomAdapter(this, CreateGroup.group.rcvdMessages);
+        mAdapter = new MyCustomAdapter(this, AddUser.user.groupNames.get(AddUser.user.currGroup).rcvdMessages);
         mList.setAdapter(mAdapter);
 
         // connect to the server
@@ -58,6 +64,15 @@ public class SendMessages extends Activity {
                 //refresh the list
                 mAdapter.notifyDataSetChanged();
                 editText.setText("");
+            }
+        });
+
+        Button back = (Button) findViewById(R.id.home);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), SplashScreen.class);
+                startActivity(intent);
             }
         });
 
@@ -87,7 +102,8 @@ public class SendMessages extends Activity {
             super.onProgressUpdate(values);
 
             //in the arrayList we add the messaged received from server
-            CreateGroup.group.rcvdMessages.add(values[0]);
+            AddUser.user.groupNames.get(AddUser.user.currGroup).addMessage(values[0]);
+
             // notify the adapter that the data set has changed. This means that new message received
             // from server was added to the list
             mAdapter.notifyDataSetChanged();

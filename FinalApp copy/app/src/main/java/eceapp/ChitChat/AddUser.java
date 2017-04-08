@@ -25,7 +25,7 @@ public class AddUser extends Activity {
         setContentView(R.layout.add_client);
 
         userName = (EditText) findViewById(R.id.clientName);
-        createUser = (Button) findViewById(R.id.createButton);
+        createUser = (Button) findViewById(R.id.createClient);
         createUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

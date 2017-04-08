@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class User {
@@ -20,6 +21,9 @@ public class User {
     public static final int SERVERPORT = 2222;
     private OnMessageReceived mMessageListener = null;
     private boolean mRun = false;
+
+    static ArrayList<Group> groupNames = new ArrayList<Group>(); // list of the user's groups
+    int currGroup = -1;
 
     PrintStream output;
     BufferedReader in;

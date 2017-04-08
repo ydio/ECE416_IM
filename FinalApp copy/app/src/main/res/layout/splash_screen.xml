@@ -4,14 +4,26 @@
     android:layout_height="match_parent">
 
     <Button
+        android:id="@+id/showButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show group members" />
+
+    <Button
         android:id="@+id/Create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create group" />
+        android:text="Create new group" />
 
     <Button
         android:id="@+id/join"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Join group" />
+        android:text="Join existing group" />
+
+    <Button
+        android:id="@+id/quitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quit a group" />
 </LinearLayout>

@@ -123,10 +123,13 @@ class clientThread extends Thread {
 				Packet sentPacket = new Packet (" ", "LOGIN", "no", DateFormat.getDateTimeInstance().format(new Date()), "Enter your name.");
 				os.println(sentPacket.tostring(sentPacket));
 
+//				sentPacket.setName(AddUser.user.name);
+
 				String recivedPacket = is.readLine().trim();
 				//System.out.println("packet " + recivedPacket);
 				Packet newPacket = new Packet(recivedPacket);
 				name = newPacket.getMessage();
+				User usr = new User(name);
 
 				if (name.indexOf('|') == -1) {
 					break;

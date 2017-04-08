@@ -15,25 +15,37 @@ import android.widget.EditText;
 public class CreateGroup extends Activity {
 
     static Group group;
-    private EditText groupName;
-    private Button create;
+    static String name = null;
+    private EditText groupName = null;
+    private Button create = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_group);
 
-        groupName = (EditText) findViewById(R.id.groupName);
+//        groupName = (EditText) findViewById(R.id.groupName);
+//        group = new Group(groupName.getText().toString());
         create = (Button) findViewById(R.id.createButton);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = groupName.getText().toString();
-                group = new Group(name);
+                groupName = (EditText) findViewById(R.id.groupName);
+                group = new Group(groupName.getText().toString());
                 group.addMember(AddUser.user);
-                JoinGroup.groupNames.add(group);
+                AddUser.user.groupNames.add(group);
+                AddUser.user.currGroup++;
 
                 Intent intent = new Intent(getBaseContext(), SendMessages.class);
+                startActivity(intent);
+            }
+        });
+
+        Button back = (Button) findViewById(R.id.home);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), SplashScreen.class);
                 startActivity(intent);
             }
         });

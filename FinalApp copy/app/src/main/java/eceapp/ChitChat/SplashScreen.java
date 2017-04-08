@@ -35,5 +35,15 @@ public class SplashScreen extends Activity {
                 startActivity(intent);
             }
         });
+
+        Button quitGroupButton = (Button) findViewById(R.id.quitButton);
+        quitGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), QuitGroup.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
